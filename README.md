@@ -9,6 +9,8 @@ Main folder with the binary files:
 
 ## showerGenerator
 A package that handles the stearing cards generation.
+-- randLib: used for the generation of the random numbers following the correct distributions-
+-- primes.dat: prime numbers between 1901 and 45077
 
 ## corsikaDatacard
 A package that handles the CORSIKA datacard structure.
