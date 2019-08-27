@@ -46,20 +46,75 @@ class datacardBase:
     self._host    = ["HOST", "CNAF"]
     self._debug   = ["DEBUG", ["F", 6, "F", 100000]]
 
+
+    self._attrList = [
+      '_runnr',   
+      '_nshow',   
+      '_evtnr',   
+      '_prmpar',  
+      '_eslope',  
+      '_erange',  
+      '_seed1',   
+      '_seed2',   
+      '_seed3',   
+      '_thin',    
+      '_thinh',   
+      '_thetap',  
+      '_phip',    
+      '_epos',    
+      '_eposig',  
+      '_fixchi',  
+      '_atmod',   
+      '_obslev',  
+      '_magnet',  
+      '_ecuts',   
+      '_muaddi',  
+      '_mumult',  
+      '_hadflag', 
+      '_elmflg',  
+      '_stepfc',  
+      '_radnkg',  
+      '_longi',   
+      '_ectmap',  
+      '_maxprt',  
+      '_datbas',  
+      '_parout',  
+      '_direct',  
+      '_datdir',  
+      '_user',    
+      '_host',    
+      '_debug',   
+    ]
+    
   #----------------------------------------------------------------------
   # Utils
   #----------------------------------------------------------------------
 
+  # def getCard(self):
+  #   outStr = ""
+  #   for attr in self.__dict__.items():
+  #     outStr += attr[1][0]+"\t"
+  #     if type(attr[1][1]) is list:
+  #       for value in attr[1][1]:
+  #         outStr+=(str(value)+"\t")
+  #       outStr+="\n"
+  #     else:
+  #       outStr+=(str(attr[1][1])+"\n")
+
+  #   outStr+="EXIT"
+  #   return outStr
+
   def getCard(self):
     outStr = ""
-    for attr in self.__dict__.items():
-      outStr += attr[1][0]+"\t"
-      if type(attr[1][1]) is list:
-        for value in attr[1][1]:
+    for attribute in self._attrList:
+      attr = self.__dict__[attribute]
+      outStr += attr[0]+"\t"
+      if type(attr[1]) is list:
+        for value in attr[1]:
           outStr+=(str(value)+"\t")
         outStr+="\n"
       else:
-        outStr+=(str(attr[1][1])+"\n")
+        outStr+=(str(attr[1])+"\n")
 
     outStr+="EXIT"
     return outStr
