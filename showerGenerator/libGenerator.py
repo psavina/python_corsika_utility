@@ -52,6 +52,8 @@ class libGenerator:
     self._primes = []
 
     self._PhysicalDistributions = True
+    self._genFlatEnergy = False
+    self._genFlatTheta = False
     
     primesFile = open("primes.dat","r")
     for line in primesFile:
@@ -60,30 +62,62 @@ class libGenerator:
         self._primes.append( int(number) )
 
     primesFile.close()
-    #nPrimes = len(self._primes)
-    #i = showerID%nPrimes
-    #j = showerID//nPrimes
     self._seed = -1
-    #self._seed = self.primes[i]*self.primes[j]
 
   #------------------------------------------------------------
   # utils
   #------------------------------------------------------------
   def _getShower(self, rndEne, rndPhi, pr):
     if self._PhysicalDistributions:
-      return self._randLib.generateShower( rndEne, rndPhi, pr)
+      return self._randLib.generateShower( rndEne, rndTh, pr)
     else:
       minEne = self._randLib.energyMin()
       maxEne = self._randLib.energyMax()
       minTh = self._randLib.thetaMin()
       maxTh = self._randLib.thetaMax()
       shower = showerBase()
-      shower.energy = (maxEne-minEne)*rndEne+minEne
-      shower.theta = (maxTh-minTh)*rndTh+minTh
-  def _setBinEnergy(self):
-    return a
-  
+
+      if self._genFlatEnergy:
+        shower.energy = (maxEne-minEne)*rndEne+minEne
+      else:
+        shower.energy = self._randLib.generateEnergy(rndEne)
+      if self._genFlatTheta:  
+        shower.theta = (maxTh-minTh)*rndTh+minTh
+      else:
+        shower.theta = self._randLib.generateTheta(rndTh)
+
+      shower.primaryType = pr
+      return shower
+
+    
+  def _setBinEnergy(self, iBin):
+    binWidth = (self._energyMax-self._energyMin)/self._energyBins
+    # -9: conversion in GeV
+    minEne = self._energyMin+binWidth*iBin-9
+    maxEne = self._energyMin+binWidth*(iBin+1)-9
+
+    self._randLib.energyMin = np.power(10, minEne)
+    self._randLib.energyMax = np.power(10, maxEne)
+
+  def _setBinTheta(self, iBin):
+    binWidth =  (self._thetaMax-self._thetaMin)/self._thetaBins
+    minTh = self._thetaMin+binWidth*iBin
+    maxTh = self._thetaMin+binWidth*(iBin+1)
+    
   def genDatacard(self, showerID):
+    nPrimes = len(self._primes)
+    i = showerID%nPrimes
+    j = showerID//nPrimes
+    self._seed = self.primes[i]*self.primes[j]
+
+    np.random.seed( self._seed )
+    #generate an array of two random value uniformely extracted between 0.0 and 1.0
+    # first value: energy;
+    # second value: theta.
+    rnd = np.random.uniform(0.0, 1.0, 2)
+    
+    
+    self._seed = -1
     return showerID
     
     

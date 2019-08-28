@@ -50,6 +50,8 @@ class randLib:
 
   @energyMin.setter
   def energyMin(self, eMin):
+    if eMin < 100 or eMin > 1e12:
+      raise ValueError("Energy must be expressed in GeV")
     self._energyMin = eMin
 
   @property
@@ -58,6 +60,8 @@ class randLib:
 
   @energyMax.setter
   def energyMax(self, eMax):
+    if eMin < 100 or eMin > 1e12:
+      raise ValueError("Energy must be expressed in GeV")
     self._energyMax = eMax
 
   @property
