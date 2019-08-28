@@ -122,7 +122,14 @@ class datacardBase:
   
   def printCard(self):
     print(self.getCard())
+    return
 
+  def writeCard(self, fileName):
+    f = open(fileName, "w")
+    f.write( self.getCard() )
+    return
+
+  
   #---------------------------------------------------------------------
   # getter and setter declarations
   #---------------------------------------------------------------------
