@@ -13,11 +13,20 @@ primaryType = {
 
 class showerBase:
   def __init__(self):
+    self._showerID = 0
     self._energy = 0.0
     self._theta = 0.0
     self._core = [0.0, 0.0]
     self._primaryType = primaryType['proton']
 
+  @property
+  def showerID(self):
+    return self._showerID
+
+  @showerID.setter
+  def showerID(self, a):
+    self._showerID = a
+    
   @property
   def energy(self):
     return self._energy
