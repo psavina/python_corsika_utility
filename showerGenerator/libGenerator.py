@@ -67,6 +67,7 @@ class libGenerator:
   #------------------------------------------------------------
   # utils
   #------------------------------------------------------------
+
   def _getShower(self, rndEne, rndPhi, pr):
     if self._PhysicalDistributions:
       return self._randLib.generateShower( rndEne, rndTh, pr)
@@ -99,27 +100,51 @@ class libGenerator:
     self._randLib.energyMin = np.power(10, minEne)
     self._randLib.energyMax = np.power(10, maxEne)
 
+    
   def _setBinTheta(self, iBin):
     binWidth =  (self._thetaMax-self._thetaMin)/self._thetaBins
     minTh = self._thetaMin+binWidth*iBin
     maxTh = self._thetaMin+binWidth*(iBin+1)
-    
-  def genDatacard(self, showerID):
-    nPrimes = len(self._primes)
-    i = showerID%nPrimes
-    j = showerID//nPrimes
-    self._seed = self.primes[i]*self.primes[j]
 
-    np.random.seed( self._seed )
-    #generate an array of two random value uniformely extracted between 0.0 and 1.0
-    # first value: energy;
-    # second value: theta.
-    rnd = np.random.uniform(0.0, 1.0, 2)
+    self._randLib.thetaMin = minTh
+    self._randLib.thetaMax = maxTh
+
     
+  def _genDatacard(self, shower):
+
+    datacard = dcB()
     
-    self._seed = -1
-    return showerID
+    return datacard
+
+  
+  def generateLibrary(self):
+
+    showerID = 0
+    self._showerPerBin = self._showerPerPrimary//(self._energyBins*self._thetaBins)
+    for primary in self._primaries:
+
+      for iEne in range(0, self._energyBins):
+	
+
+      
+      for iShower in range(0, self._showerPerPrimary):
+
+	nPrimes = len(self._primes)
+	i = shower.showerID%nPrimes
+	j = shower.showerID//nPrimes
+	self._seed = self.primes[i]*self.primes[j]
     
+	np.random.seed( self._seed )
+	#generate an array of two random value uniformely extracted between 0.0 and 1.0
+	# first value: energy;
+	# second value: theta.
+	rnd = np.random.uniform(0.0, 1.0, 2)
+	
+	self._seed = -1
+
+    
+    return
+
     
   #------------------------------------------------------------
   # getter and setter
